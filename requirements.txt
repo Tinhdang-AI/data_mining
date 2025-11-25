@@ -1,0 +1,9 @@
+pandas
+numpy
+matplotlib
+scikit-learn
+seaborn
+joblib
+streamlit
+# Note: Install streamlit with --no-deps to avoid pyarrow build issues
+# Then install: pip install altair blinker cachetools click protobuf requests tenacity toml typing-extensions watchdog gitpython pydeck
