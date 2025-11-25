@@ -3,17 +3,24 @@ import numpy as np # Import thư viện xử lý tính toán số học
 from sklearn.impute import SimpleImputer # Import thư viện xử lý dữ liệu thiếu
 from sklearn.preprocessing import StandardScaler # Import thư viện chuẩn hóa dữ liệu
 
+
 # 1. ĐỊNH NGHĨA CÁC CỘT QUAN TRỌNG (CONSTANTS)
-FEATURE_COLS = [
-    'OverallQual',    # Chất lượng tổng thể
-    'GrLivArea',      # Diện tích sống
-    'GarageCars',     # Số chỗ để xe
-    'TotalBsmtSF',    # Diện tích hầm
-    'FullBath',       # Số phòng tắm
-    'YearBuilt',      # Năm xây dựng
-    '1stFlrSF',       # Diện tích tầng 1
-    'TotRmsAbvGrd'    # Tổng số phòng
-]
+# FEATURE_COLS = [
+#     'OverallQual',    # Chất lượng tổng thể
+#     'GrLivArea',      # Diện tích sống
+#     'GarageCars',     # Số chỗ để xe
+#     'TotalBsmtSF',    # Diện tích hầm
+#     'FullBath',       # Số phòng tắm
+#     'YearBuilt',      # Năm xây dựng
+#     '1stFlrSF',       # Diện tích tầng 1
+#     'TotRmsAbvGrd'    # Tổng số phòng
+# ]
+# Module này chứa các hàm để:
+# - Đọc và khám phá dữ liệu
+# - Tạo nhãn phân loại
+# - Xử lý missing values
+# - Chuẩn bị features cho machine learning
+
 
 TARGET_COL = 'SalePrice' # Cột mục tiêu dự đoán
 
