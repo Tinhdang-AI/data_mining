@@ -4,12 +4,12 @@ import numpy as np # Import thư viện xử lý tính toán số học
 from sklearn.impute import SimpleImputer # Import thư viện xử lý dữ liệu thiếu
 from sklearn.preprocessing import StandardScaler # Import thư viện chuẩn hóa dữ liệu
 
-Module này chứa các hàm để:
-- Đọc và khám phá dữ liệu
-- Tạo nhãn phân loại
-- Xử lý missing values
-- Chuẩn bị features cho machine learning
-"""
+# Module này chứa các hàm để:
+# - Đọc và khám phá dữ liệu
+# - Tạo nhãn phân loại
+# - Xử lý missing values
+# - Chuẩn bị features cho machine learning
+
 
 import pandas as pd
 import numpy as np
