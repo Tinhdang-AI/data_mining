@@ -46,11 +46,13 @@ class HousePricePreprocessor:
         info = {
             'shape': self.df.shape,
             'missing_values': self.df.isnull().sum().sum(), #gôm tất cả giá trị theo từng cột
+            'duplicates': self.df.duplicated().sum(),
             'avg_price': self.df['SalePrice'].mean()
         }
         
         print(f"Kich thuoc: {info['shape']}")
         print(f"Missing values: {info['missing_values']}")
+        print(f"Du lieu trung lap: {info['duplicates']}")
         print(f"Gia trung binh: ${info['avg_price']:,.0f}")
         return info
     
@@ -63,6 +65,10 @@ class HousePricePreprocessor:
         """
         if self.df is None:
             self.load_data()
+        # cột Id không cần thiết cho việc dự đoán
+        self.df.drop(['Id'], axis=1, inplace=True)
+        # Xóa dữ liệu trùng lặp trước khi xử lý
+        self.df = self.df.drop_duplicates(keep='first')
         
         # Xử lý missing values
         # 1. fit_transform: Tính toán trung vị (học) và điền vào chỗ trống (làm) cùng lúc.
