@@ -1,207 +1,145 @@
-# House Price Prediction Project 
+# House Price Prediction Project
 
-Dự án Machine Learning dự đoán giá nhà sử dụng dataset House Prices với các thuật toán Classification và Regression.
+Dự án Machine Learning dự đoán giá nhà (Regression) sử dụng dataset `data/House_Prices.csv`.
+Mục tiêu: xây dựng pipeline tiền xử lý, huấn luyện và lưu mô hình để phục vụ dự đoán giá nhà.
 
 ## Cấu trúc dự án
 
 ```
 data_mining/
 ├── data/
-│   └── House_Prices.csv          # Dataset gốc
+│   └── House_Prices.csv        # Dataset gốc (bắt buộc để chạy pipeline/demo)
 ├── demo/
-│   ├── app.py                   # Streamlit demo app
-│   └── README_DEMO.md           # Hướng dẫn demo
-├── models/
-│   ├── model.pkl                # Model đã train (hiện tại)
-│
+│   └── app.py                  # Streamlit demo app
+├── models/                     # Thư mục lưu model được huấn luyện (sẽ tạo khi chạy pipeline)
 ├── notebooks/
-│   └── notebook.ipynb           # Jupyter notebook gốc
+│   └── notebook.ipynb          # Notebook nguồn (khám phá/experiments)
 ├── src/
-│   ├── preprocessing.py         # Xử lý dữ liệu và feature engineering
-│   ├── modeling.py              # Định nghĩa và huấn luyện các mô hình
-│   └── predict.py               # Pipeline hoàn chỉnh và prediction
-├── requirements.txt             # Danh sách thư viện cần thiết
-├── test_modules.py              # Script test các modules
-└── README.md                    # File hướng dẫn này
+│   ├── preprocessing.py        # Tiền xử lý và chuẩn bị feature
+│   ├── modeling.py             # Định nghĩa, huấn luyện và lưu model
+│   └── predict.py              # Pipeline chạy toàn bộ quá trình
+├── requirements.txt            # Thư viện cần thiết
+└── README.md                   # Hướng dẫn này
 ```
 
-##  Cách sử dụng
+## Cách sử dụng
 
 ### 1. Cài đặt thư viện
 
 ```bash
 pip install -r requirements.txt
 ```
-### 2. Chạy Demo App (Streamlit) 
 
-```bash
+### 2. Chạy Demo App (Streamlit)
 
-# chạy trực tiếp
-streamlit run app.py
+Streamlit app nằm ở `demo/app.py`. Từ thư mục gốc project chạy:
+
+```powershell
+streamlit run demo/app.py
 ```
 
 ### 3. Chạy toàn bộ pipeline
 
-```bash
-cd src
-python predict.py
+Có hai cách chạy pipeline (từ thư mục gốc của project):
+
+```powershell
+python src\predict.py
+# hoặc
+cd src; python predict.py
 ```
 
-### 4. Test các modules
+Kết quả: huấn luyện các mô hình (Linear Regression, Random Forest), in báo cáo đánh giá và lưu model tốt nhất vào `models/model.pkl`.
 
-```bash
-python test_modules.py
+### 4. Chạy nhanh kiểm tra module (manual)
+
+Các module có các đoạn `if __name__ == "__main__"` để test nhanh. Ví dụ:
+
+```powershell
+python src\preprocessing.py
+python src\modeling.py
+python src\predict.py
 ```
+
+Nếu muốn viết test tự động, có thể thêm `tests/` và dùng `pytest`.
 
 ## Demo App Features
 
-### **Streamlit Web Interface**
-- ** Dự đoán nhanh**: Form tương tác để nhập thông tin nhà và dự đoán giá
-- ** Phân tích dữ liệu**: Visualizations với Plotly (histograms, scatter plots, box plots)
-- ** ML Pipeline**: Chạy toàn bộ quy trình machine learning với real-time results
-
-### **Interactive Controls**
-- Sliders và number inputs cho các features
-- Real-time prediction khi thay đổi parameters
-- Multiple visualization modes
-- Responsive design với sidebar navigation
+- Giao diện Streamlit cho:
+  - Dự đoán nhanh (form nhập features)
+  - Phân tích dữ liệu (histogram, scatter, boxplot)
+  - Chạy phân tích ML hoàn chỉnh (huấn luyện và so sánh mô hình)
+- Nếu chưa có `models/model.pkl`, app sẽ gợi ý chạy "Phân tích ML hoàn chỉnh" để huấn luyện và lưu model.
 
 ## Các mô hình được sử dụng
 
-### Classification Models (Phân loại mức giá)
-- **Decision Tree**: Cây quyết định với max_depth=10
-- **Logistic Regression**: Hồi quy logistic với max_iter=1000
-- **Random Forest**: 100 cây quyết định
+Hiện tại project chỉ tập trung vào Regression (dự đoán giá):
 
-### Regression Models (Dự đoán giá cụ thể)
-- **Linear Regression**: Hồi quy tuyến tính
-- **Random Forest**: 100 cây hồi quy
+- `LinearRegression` (scikit-learn)
+- `RandomForestRegressor` (n_estimators=100)
 
-##  Metrics đánh giá
+So sánh giữa Linear Regression (sau scaling) và Random Forest (dùng raw features) được thực hiện trong `src/predict.py` và `demo/app.py`.
 
-### Classification Metrics
-- **Accuracy**: Tỷ lệ dự đoán đúng
-- **Precision**: Độ chính xác của dự đoán positive
-- **Recall**: Khả năng tìm ra các mẫu positive
-- **F1-Score**: Trung bình điều hòa của Precision và Recall
+## Metrics đánh giá (Regression)
 
-### Regression Metrics
-- **MAE** (Mean Absolute Error): Sai số tuyệt đối trung bình
-- **RMSE** (Root Mean Square Error): Căn bậc 2 của MSE
-- **R²** (Coefficient of Determination): Hệ số xác định (0-1)
+- **MAE** (Mean Absolute Error)
+- **RMSE** (Root Mean Square Error)
+- **R²** (Coefficient of Determination)
 
-## Features sử dụng
+## Features chính
 
-1. **OverallQual**: Chất lượng tổng thể (1-10)
-2. **GrLivArea**: Diện tích sống trên mặt đất (sq ft)
-3. **GarageCars**: Số xe có thể đỗ trong garage
-4. **TotalBsmtSF**: Tổng diện tích tầng hầm (sq ft)
-5. **FullBath**: Số phòng tắm đầy đủ tiện nghi
-6. **YearBuilt**: Năm xây dựng
-7. **1stFlrSF**: Diện tích tầng 1 (sq ft)
-8. **TotRmsAbvGrd**: Tổng số phòng trên mặt đất
+Module `src/preprocessing.py` sử dụng các feature sau (mặc định):
+
+- `OverallQual`, `GrLivArea`, `GarageCars`, `TotalBsmtSF`, `FullBath`, `YearBuilt`, `1stFlrSF`, `TotRmsAbvGrd`.
+
+Bạn có thể mở `src/preprocessing.py` để thêm/sửa danh sách features nếu cần.
 
 ## Kết quả mong đợi
 
-- **Classification Accuracy**: > 80%
-- **Regression R²**: > 0.7
-- **Cross-validation stability**: Độ lệch chuẩn thấp
+- Mục tiêu: đạt R² cao và MAE/RMSE thấp trên tập test. Giá trị cụ thể tùy dataset và feature-engineering.
 
+## Ví dụ sử dụng nhanh (Python)
 
-## Usage Examples
+Preprocessing + chạy pipeline từ code:
 
-### Sử dụng từng module riêng lẻ
-
-#### Preprocessing (Xử lý dữ liệu)
 ```python
 from src.preprocessing import HousePricePreprocessor
-
-preprocessor = HousePricePreprocessor('./data/House_Prices.csv')
-preprocessor.explore_data()
-X, y_class, y_reg = preprocessor.prepare_features()
-```
-
-#### Modeling (Huấn luyện mô hình)
-```python
-from src.modeling import ModelEvaluator, ModelFactory
-
-evaluator = ModelEvaluator()
-class_models = ModelFactory.create_classification_models()
-
-dt_result = evaluator.evaluate_classification_model(
-    class_models['Decision Tree'], 
-    X_train, X_test, y_train, y_test, 
-    "Decision Tree"
-)
-```
-
-#### Prediction (Dự đoán)
-```python
 from src.predict import HousePricePipeline
 
-pipeline = HousePricePipeline('./data/House_Prices.csv')
-pipeline.run_full_pipeline()
+prep = HousePricePreprocessor('data/House_Prices.csv')
+prep.explore_data()
+X, y = prep.prepare_features()
 
-# Dự đoán cho một ngôi nhà
-sample_house = {
-    'OverallQual': 7, 'GrLivArea': 1500,
-    'GarageCars': 2, 'TotalBsmtSF': 1000,
-    'FullBath': 2, 'YearBuilt': 2000,
-    '1stFlrSF': 800, 'TotRmsAbvGrd': 7
-}
-
-result = pipeline.predict_single_house(sample_house, 'regression')
+pipeline = HousePricePipeline('data/House_Prices.csv')
+pipeline.run()  # Chạy toàn bộ pipeline (train, đánh giá, lưu model)
 ```
+
+Để dùng model đã lưu để dự đoán nhanh, chạy Streamlit demo hoặc load `models/model.pkl` bằng `joblib`.
 
 ## Dependencies
 
-```txt
-pandas>=1.3.0
-numpy>=1.21.0
-matplotlib>=3.4.0
-scikit-learn>=1.0.0
-seaborn>=0.11.0
-joblib>=1.0.0
-streamlit>=1.28.0    # For demo app
-plotly>=5.15.0       # For interactive visualizations
+Các phụ thuộc chính nằm trong `requirements.txt`. Ví dụ cài nhanh:
+
+```powershell
+pip install -r requirements.txt
 ```
+
+Một số package quan trọng: `pandas`, `numpy`, `scikit-learn`, `joblib`, `streamlit`, `matplotlib`, `seaborn`.
 
 ## Troubleshooting
 
-### Lỗi thiếu thư viện
-```bash
-pip install pandas numpy matplotlib scikit-learn seaborn joblib streamlit plotly
-```
+- Lỗi thiếu thư viện: chạy `pip install -r requirements.txt`.
+- Lỗi không tìm thấy data: đảm bảo `data/House_Prices.csv` tồn tại.
+- Nếu Streamlit báo lỗi import, chạy lệnh từ thư mục gốc và đảm bảo Python environment đúng.
+- Thay port của Streamlit nếu cần:
 
-### Lỗi không tìm thấy file data
-- Đảm bảo file `House_Prices.csv` có trong thư mục `data/`
-- Demo app vẫn chạy được mà không có data (chế độ prediction only)
-
-### Lỗi import module
-- Đảm bảo chạy từ thư mục gốc của project
-- Sử dụng các script launcher (`run_demo.py`, `run_pipeline.py`)
-
-### Streamlit app không mở
-```bash
-# Thử port khác nếu 8501 bị chiếm
+```powershell
 streamlit run demo/app.py --server.port 8502
 ```
 
-## Highlights
+## Tác giả & License
 
-✅ **Modular Architecture**: Tách biệt preprocessing, modeling, và prediction  
-✅ **Interactive Demo**: Streamlit app với real-time predictions  
-✅ **Comprehensive Testing**: Test scripts cho từng module  
-✅ **Easy Deployment**: One-command launchers  
-✅ **Rich Visualizations**: Plotly charts trong demo app  
-✅ **Professional Structure**: Theo chuẩn ML projects  
+Project author: repository owner.
 
-## Tác giả
-
-Dự án được tạo từ Jupyter Notebook và chia thành cấu trúc modular để dễ bảo trì, mở rộng và deployment.
-
-## License
-
-MIT License - Sử dụng tự do cho mục đích học tập và nghiên cứu.
+License: MIT (xem file `LICENSE`).
 
 ---

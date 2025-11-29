@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 
 # Module này chứa các hàm để:
 # - Đọc và khám phá dữ liệu
-# - Tạo nhãn phân loại
 # - Xử lý missing values
 # - Chuẩn bị features cho machine learning
 
