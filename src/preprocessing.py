@@ -64,7 +64,8 @@ class HousePricePreprocessor:
         """
         if self.df is None:
             self.load_data()
-        
+        # cột Id không cần thiết cho việc dự đoán
+        self.df.drop(['Id'], axis=1, inplace=True)
         # Xóa dữ liệu trùng lặp trước khi xử lý
         self.df = self.df.drop_duplicates(keep='first')
         
