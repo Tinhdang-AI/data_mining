@@ -45,11 +45,13 @@ class HousePricePreprocessor:
         info = {
             'shape': self.df.shape,
             'missing_values': self.df.isnull().sum().sum(),
+            'duplicates': self.df.duplicated().sum(),
             'avg_price': self.df['SalePrice'].mean()
         }
         
         print(f"Kich thuoc: {info['shape']}")
         print(f"Missing values: {info['missing_values']}")
+        print(f"Du lieu trung lap: {info['duplicates']}")
         print(f"Gia trung binh: ${info['avg_price']:,.0f}")
         return info
     
@@ -62,6 +64,9 @@ class HousePricePreprocessor:
         """
         if self.df is None:
             self.load_data()
+        
+        # Xóa dữ liệu trùng lặp trước khi xử lý
+        self.df = self.df.drop_duplicates(keep='first')
         
         # Xử lý missing values
         X = pd.DataFrame(
