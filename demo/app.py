@@ -82,13 +82,13 @@ def create_sample_prediction_form():
         col1, col2 = st.columns(2)
         with col1:
             overall_qual = st.slider("Chất lượng tổng thể (1-10)", 1, 10, 7)
-            gr_liv_area = st.number_input("Diện tích sống (sq ft)", 500, 5000, 1500)
-            garage_cars = st.slider("Số xe garage", 0, 4, 2)
-            total_bsmt_sf = st.number_input("Diện tích tầng hầm (sq ft)", 0, 3000, 1000)
+            gr_liv_area = st.number_input("Diện tích sống (sq ft)", 500, 6000, 1500)
+            first_flr_sf = st.number_input("Diện tích tầng 1 (sq ft)", 300, 5000, 800)
+            total_bsmt_sf = st.number_input("Diện tích tầng hầm (sq ft)", 0, 6500, 1000)
         with col2:
             full_bath = st.slider("Số phòng tắm đầy đủ", 0, 4, 2)
             year_built = st.slider("Năm xây dựng", 1850, 2025, 2000)
-            first_flr_sf = st.number_input("Diện tích tầng 1 (sq ft)", 300, 3000, 800)
+            garage_cars = st.slider("Số xe garage", 0, 4, 2)
             tot_rms_abv_grd = st.slider("Tổng số phòng", 3, 15, 7)
         
         predict_button = st.form_submit_button("Dự đoán giá", use_container_width=True)
@@ -247,7 +247,7 @@ def main():
             if model:
                 try:
                     price = model.predict(pd.DataFrame([features]))[0]
-                    display_prediction_result(f"Giá dự đoán (AI): ${price:,.0f}", features)
+                    display_prediction_result(f"Giá dự đoán: ${price:,.0f}", features)
                 except Exception as e: st.error(f"Lỗi: {e}")
             else:
                 st.warning("Chưa có model AI. Vui lòng chạy 'Phân tích ML hoàn chỉnh' trước.")
