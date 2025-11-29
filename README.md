@@ -218,6 +218,10 @@ streamlit run app.py
 - **RMSE**: Root Mean Square Error (penalize large errors)  
 - **R²**: Coefficient of Determination (0-1, higher is better)
 
+🥳 Trải nghiệm mô hình trực tiếp
+👉 Demo App:
+https://tinhdang-ai-data-mining-demoapp-develop-ac4hja.streamlit.app/
+
 ## 🔮 Tương Lai
 
 ### Planned Improvements
