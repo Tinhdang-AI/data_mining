@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 
 class HousePricePreprocessor:
     """Class xử lý dữ liệu House Prices cho bài toán Regression"""
-    
+    # Khởi tạo với đường dẫn đến file dữ liệu với self để chỉ đang thao tác trên chính trạng thái
     def __init__(self, data_path='data/House_Prices.csv'):
         """
         Khởi tạo preprocessor
@@ -24,7 +24,9 @@ class HousePricePreprocessor:
         self.df = None
         self.features = ['OverallQual', 'GrLivArea', 'GarageCars', 'TotalBsmtSF',
                         'FullBath', 'YearBuilt', '1stFlrSF', 'TotRmsAbvGrd']
-        self.imputer = SimpleImputer(strategy='median')
+        self.imputer = SimpleImputer(strategy='median') # Khởi tạo bộ xử lý dữ liệu thiếu: Tự động điền các ô trống (NaN) bằng giá trị trung vị (median) của cột đó.
+        # Khởi tạo bộ chuẩn hóa dữ liệu: Đưa các tính chất (features) về cùng một tỉ lệ (thang đo).
+        # Giúp thuật toán không bị nhầm lẫn giữa số lớn (Diện tích: 1000) và số bé (Phòng ngủ: 3).
         self.scaler = StandardScaler()
         
     def load_data(self):
@@ -35,7 +37,7 @@ class HousePricePreprocessor:
             
         self.df = pd.read_csv(self.data_path)
         return self.df
-    
+    # hàm khám phá dữ liệu cơ bản
     def explore_data(self):
         """Khám phá cơ bản về dữ liệu"""
         if self.df is None:
@@ -43,7 +45,7 @@ class HousePricePreprocessor:
             
         info = {
             'shape': self.df.shape,
-            'missing_values': self.df.isnull().sum().sum(),
+            'missing_values': self.df.isnull().sum().sum(), #gôm tất cả giá trị theo từng cột
             'duplicates': self.df.duplicated().sum(),
             'avg_price': self.df['SalePrice'].mean()
         }
@@ -69,6 +71,9 @@ class HousePricePreprocessor:
         self.df = self.df.drop_duplicates(keep='first')
         
         # Xử lý missing values
+        # 1. fit_transform: Tính toán trung vị (học) và điền vào chỗ trống (làm) cùng lúc.
+        # 2. pd.DataFrame: Vì sklearn trả về mảng số (numpy array) mất hết tên cột,
+        #    nên ta phải tạo lại DataFrame và gán lại tên cột (columns=self.features) để giữ cấu trúc bảng.
         X = pd.DataFrame(
             self.imputer.fit_transform(self.df[self.features]),
             columns=self.features
@@ -91,8 +96,13 @@ class HousePricePreprocessor:
         return X_train, X_test, y_train, y_test
     
     def scale_features(self, X_train, X_test):
+
+        # 1. Tập Train: Vừa HỌC tham số (mean, std) vừa BIẾN ĐỔI dữ liệu.
+        # Máy sẽ ghi nhớ mean và std của tập Train này.
         """Chuẩn hóa dữ liệu (quan trọng cho Linear Regression)"""
         X_train_scaled = self.scaler.fit_transform(X_train)
+        # 2. Tập Test: Chỉ BIẾN ĐỔI dựa trên những gì đã học từ tập Train.
+        # QUAN TRỌNG: Không được fit() lại trên tập Test để tránh "Data Leakage".
         X_test_scaled = self.scaler.transform(X_test)
         
         return X_train_scaled, X_test_scaled

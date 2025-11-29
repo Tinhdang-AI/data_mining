@@ -1,6 +1,7 @@
-# 🏠 House Price Prediction - Dự Án Khai Phá Dữ Liệu
+# House Price Prediction Project
 
-## 📋 Tổng Quan Dự Án
+Dự án Machine Learning dự đoán giá nhà (Regression) sử dụng dataset `data/House_Prices.csv`.
+Mục tiêu: xây dựng pipeline tiền xử lý, huấn luyện và lưu mô hình để phục vụ dự đoán giá nhà.
 
 Dự án xây dựng hệ thống dự đoán giá nhà sử dụng Machine Learning, bao gồm phân tích dữ liệu, huấn luyện mô hình và triển khai ứng dụng web.
 
@@ -160,9 +161,12 @@ pip install -r requirements.txt
 
 ### 2. Chạy Pipeline Hoàn Chỉnh
 
-```bash
-cd src
-python predict.py
+Có hai cách chạy pipeline (từ thư mục gốc của project):
+
+```powershell
+python src\predict.py
+# hoặc
+cd src; python predict.py
 ```
 
 ### 3. Chạy Jupyter Notebook
